@@ -9,7 +9,6 @@ export {
   transformFileForHMR,
   createHMRDelta,
   packageHMRUpdate,
-  createHMRMiddleware,
 } from './hmr'
 export type {
   FacetpackOptions,

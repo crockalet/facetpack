@@ -106,9 +106,13 @@ export function createHMRDelta(
     }
 
     // Skip non-transformable files
-    const ext = filePath.split('.').pop()?.toLowerCase()
+    const lastDotIndex = filePath.lastIndexOf('.')
+    if (lastDotIndex === -1) {
+      continue
+    }
+    const ext = filePath.slice(lastDotIndex + 1).toLowerCase()
     const sourceExts = options.sourceExts ?? ['ts', 'tsx', 'js', 'jsx', 'mjs', 'cjs']
-    if (!ext || !sourceExts.includes(ext)) {
+    if (!sourceExts.includes(ext)) {
       continue
     }
 
@@ -174,36 +178,5 @@ export function packageHMRUpdate(delta: HMRDelta): {
   return {
     type: modules.length > 0 ? 'update' : 'full-reload',
     modules,
-  }
-}
-
-/**
- * Create HMR middleware for Metro dev server
- * This integrates with Metro's file watcher and WebSocket server
- */
-export function createHMRMiddleware(options: FacetpackOptions & HMROptions) {
-  if (!options.enabled) {
-    return null
-  }
-
-  return {
-    /**
-     * Handle file changes from Metro's watcher
-     */
-    onFileChange(events: FileChangeEvent): void {
-      if (options.debug || process.env.FACETPACK_DEBUG) {
-        console.log('[Facetpack HMR] File changes detected:', events.eventsQueue.length)
-      }
-
-      const delta = createHMRDelta(events, options)
-      const update = packageHMRUpdate(delta)
-
-      if (options.debug || process.env.FACETPACK_DEBUG) {
-        console.log(`[Facetpack HMR] Update type: ${update.type}, modules: ${update.modules.length}`)
-      }
-
-      // The actual WebSocket communication is handled by Metro
-      // This middleware just prepares the delta payload
-    },
   }
 }

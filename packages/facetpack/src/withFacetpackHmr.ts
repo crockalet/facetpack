@@ -69,22 +69,6 @@ export function withFacetpackHmr(
     treeShake: hmrEnabled ? false : options.treeShake,
   }
 
-  // Apply base Facetpack configuration
-  const configWithFacetpack = withFacetpack(config, facetpackOptions)
-
-  if (!hmrEnabled) {
-    // If HMR is disabled, just return the base config
-    return configWithFacetpack
-  }
-
-  // Store HMR options in environment for transformer to access
-  if (hmrEnabled) {
-    process.env.FACETPACK_HMR_ENABLED = 'true'
-    if (options.debug) {
-      process.env.FACETPACK_HMR_DEBUG = 'true'
-    }
-  }
-
   // Enhance Metro config for HMR
   const hmrConfig: MetroConfig = {
     ...configWithFacetpack,
@@ -113,6 +97,12 @@ export function withFacetpackHmr(
         }
       },
     },
+  }
+
+  // Store HMR options in environment for transformer to access
+  process.env.FACETPACK_HMR_ENABLED = 'true'
+  if (options.debug) {
+    process.env.FACETPACK_HMR_DEBUG = 'true'
   }
 
   return hmrConfig
