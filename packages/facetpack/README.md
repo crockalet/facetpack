@@ -78,6 +78,57 @@ const config = getDefaultConfig(__dirname);
 module.exports = withFacetpack(config);
 ```
 
+## Hot Module Reloading (HMR)
+
+**Experimental MVP**: Facetpack now includes an HMR integration for faster development.
+
+### Usage
+
+```javascript
+// metro.config.js
+const { getDefaultConfig } = require('expo/metro-config');
+const { withFacetpackHmr } = require('facetpack');
+
+const config = getDefaultConfig(__dirname);
+
+module.exports = withFacetpackHmr(config);
+```
+
+### HMR Options
+
+```javascript
+module.exports = withFacetpackHmr(config, {
+  hmr: true,        // Enable HMR (default: true in dev)
+  debug: true,      // Enable HMR debug logging
+  jsx: true,        // All standard Facetpack options work
+  jsxRuntime: 'automatic',
+});
+```
+
+### How HMR Works
+
+1. **File Watching**: Integrates with Metro's file watcher
+2. **Incremental Transforms**: Uses facetpack-native for fast transforms in dev mode
+3. **Delta Packaging**: Creates HMR delta payloads for changed files
+4. **WebSocket Protocol**: Piggybacks on Metro's existing HMR infrastructure
+5. **Auto-Fallback**: Falls back to full reload on transform errors
+
+### HMR Behavior
+
+| Mode | Tree-shaking | HMR | Minification |
+|------|--------------|-----|--------------|
+| Development | ❌ Disabled | ✅ Enabled | ❌ Disabled |
+| Production | ✅ Enabled | ❌ Disabled | ✅ Enabled |
+
+**Note**: Tree-shaking is automatically disabled in dev/HMR mode for faster reload times.
+
+### Limitations
+
+- **MVP Implementation**: Prototype version, may have edge cases
+- **File Deletions**: Trigger full page reload
+- **Transform Errors**: Fall back to full reload
+- **Metro Dependent**: Requires Metro's dev server and WebSocket
+
 ## API
 
 ### `withFacetpack(config, options?)`
