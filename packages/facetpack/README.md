@@ -129,6 +129,8 @@ module.exports = withFacetpackHmr(config, {
 - **Transform Errors**: Fall back to full reload
 - **Metro Dependent**: Requires Metro's dev server and WebSocket
 
+📖 **[Read full HMR documentation](../../docs/HMR.md)** for detailed usage and configuration.
+
 ## API
 
 ### `withFacetpack(config, options?)`

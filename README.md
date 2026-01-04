@@ -97,6 +97,8 @@ module.exports = withFacetpackHmr(getDefaultConfig(__dirname), {
 - **Transform Errors**: Fall back to full reload
 - **Metro Protocol**: Uses Metro's existing HMR infrastructure
 
+📖 **[Read full HMR documentation](./docs/HMR.md)** for detailed usage, configuration, and troubleshooting.
+
 ---
 
 ## Part of the Facet Ecosystem
