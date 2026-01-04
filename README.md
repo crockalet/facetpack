@@ -52,6 +52,55 @@ module.exports = withFacetpack(getDefaultConfig(__dirname))
 
 ---
 
+## Hot Module Reloading (HMR) - MVP
+
+**NEW**: Experimental HMR integration that piggybacks on Metro's dev server.
+
+```js
+// metro.config.js
+const { getDefaultConfig } = require('expo/metro-config')
+const { withFacetpackHmr } = require('@ecrindigital/facetpack')
+
+module.exports = withFacetpackHmr(getDefaultConfig(__dirname))
+```
+
+### HMR Features
+
+- ⚡ **Fast Incremental Transforms** - Uses facetpack-native for changed files
+- 🔄 **Metro Protocol Compatible** - Works with Metro's existing WebSocket
+- 🗺️ **Source Maps** - Full source map support in dev mode
+- 🌲 **Tree-shaking Disabled** - Automatically disabled in dev/HMR for faster reloads
+- 🛡️ **Fallback Support** - Falls back to full reload on transform errors
+
+### HMR Configuration
+
+```js
+// Enable HMR (default in development)
+module.exports = withFacetpackHmr(getDefaultConfig(__dirname), {
+  hmr: true,
+  debug: true, // Enable HMR debug logging
+})
+
+// Disable HMR
+module.exports = withFacetpackHmr(getDefaultConfig(__dirname), {
+  hmr: false,
+})
+
+// Production builds automatically disable HMR
+```
+
+### HMR Limitations
+
+- **MVP Status**: This is a prototype implementation
+- **Tree-shaking**: Disabled in dev/HMR mode (enabled in production)
+- **File Deletions**: Trigger full reload
+- **Transform Errors**: Fall back to full reload
+- **Metro Protocol**: Uses Metro's existing HMR infrastructure
+
+📖 **[Read full HMR documentation](./docs/HMR.md)** for detailed usage, configuration, and troubleshooting.
+
+---
+
 ## Part of the Facet Ecosystem
 
 Facetpack is the foundation of **Facet**, the modern toolchain for React Native.

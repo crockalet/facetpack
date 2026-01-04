@@ -18,6 +18,8 @@ export interface FacetpackOptions {
   treeShake?: boolean
   /** If true, don't return AST - let Metro parse the code itself */
   noAst?: boolean
+  /** Enable debug logging */
+  debug?: boolean
 }
 
 export interface MetroTransformerConfig {
